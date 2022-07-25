@@ -3,8 +3,12 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-d
 
 import CommonLayout from "components/layouts/CommonLayout"
 import Home from "components/pages/Home"
+import ChatRooms from "components/pages/ChatRooms"
+import ChatRoom from "components/pages/ChatRoom"
+import Users from "components/pages/Users"
 import SignUp from "components/pages/SignUp"
 import SignIn from "components/pages/SignIn"
+import NotFound from "components/pages/NotFound"
 
 import { getCurrentUser } from "lib/api/auth"
 import { User } from "interfaces/index"
@@ -23,6 +27,7 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true)
   const [isSignedIn, setIsSignedIn] = useState<boolean>(false)
   const [currentUser, setCurrentUser] = useState<User | undefined>()
+
 
   // 認証済みのユーザーがいるかどうかチェック
   // 確認できた場合はそのユーザーの情報を取得
@@ -43,6 +48,7 @@ const App: React.FC = () => {
 
     setLoading(false)
   }
+
   useEffect(() => {
     handleGetUser()
   }, [setCurrentUser])
@@ -71,6 +77,10 @@ const App: React.FC = () => {
             <Private>
               <Switch>
                 <Route exact path="/" component={Home} />
+                <Route exact path="/users" component={Users} />
+                <Route exact path="/chat_rooms" component={ChatRooms} />
+                <Route path="/chatroom/:id" component={ChatRoom} />
+                <Route component={NotFound} />
               </Switch>
             </Private>
           </Switch>
